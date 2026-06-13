@@ -1,0 +1,34 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "preferredVersions": {
+    "php": "8.4",
+    "wp": "latest"
+  },
+  "login": true,
+  "steps": [
+    {
+      "step": "mount",
+      "mountPoint": "/wordpress/wp-content/themes/blank-theme",
+      "device": {
+        "type": "local-filesystem",
+        "path": "./wp-content/themes/blank-theme"
+      }
+    },
+    {
+      "step": "mount",
+      "mountPoint": "/wordpress/wp-content/plugins/wordcamp-org",
+      "device": {
+        "type": "local-filesystem",
+        "path": "./wp-content/plugins/wordcamp-org"
+      }
+    },
+    {
+      "step": "activateTheme",
+      "themeFolderName": "blank-theme"
+    },
+    {
+      "step": "activatePlugin",
+      "pluginPath": "wordcamp-org/wordcamp-org.php"
+    }
+  ]
+}

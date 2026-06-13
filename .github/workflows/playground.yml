@@ -1,0 +1,59 @@
+name: Try in Playground
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  # ── PR preview via official WordPress action ───────────────────────────────
+  playground-preview:
+    name: Playground PR preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: WordPress/action-wp-playground-pr-preview@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          blueprint-file: blueprints/blueprint.json
+
+  # ── Build installable zips ─────────────────────────────────────────────────
+  build-zips:
+    name: Build zips
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build blank-theme.zip
+        run: |
+          mkdir -p /tmp/build
+          git archive HEAD --prefix=blank-theme/ -- wp-content/themes/blank-theme/ \
+            | tar xf - -C /tmp/build/ --transform 's|wp-content/themes/||'
+          cd /tmp/build && zip -r blank-theme.zip blank-theme
+          echo "✔  blank-theme.zip: $(du -sh /tmp/build/blank-theme.zip | cut -f1)"
+
+      - name: Build wordcamp-org.zip
+        run: |
+          mkdir -p /tmp/build
+          git archive HEAD --prefix=wordcamp-org/ -- wp-content/plugins/wordcamp-org/ \
+            | tar xf - -C /tmp/build/ --transform 's|wp-content/plugins/||'
+          cd /tmp/build && zip -r wordcamp-org.zip wordcamp-org
+          echo "✔  wordcamp-org.zip: $(du -sh /tmp/build/wordcamp-org.zip | cut -f1)"
+
+      - name: Upload blank-theme artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: blank-theme-zip
+          path: /tmp/build/blank-theme.zip
+          retention-days: 14
+
+      - name: Upload wordcamp-org artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wordcamp-org-zip
+          path: /tmp/build/wordcamp-org.zip
+          retention-days: 14

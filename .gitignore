@@ -1,0 +1,36 @@
+# Node
+node_modules/
+
+# Build artifacts (never committed)
+*.zip
+*.tar.gz
+
+# WordPress uploads and upgrade (no media, no DB in this repo)
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+
+# Database dumps
+*.sql
+*.sql.gz
+*.wpress
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.code-workspace
+
+# Logs
+*.log
+
+blueprints/content.json
+blueprints/content.yml
+blueprints/content-compact.json
+blueprints/content-compact.yml

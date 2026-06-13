@@ -1,0 +1,23 @@
+{
+  "name": "wordcampbr",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "WordCamp Brasil – WordPress monorepo (blank-theme + wordcamp-org plugin)",
+  "scripts": {
+    "sync-blueprint": "node scripts/sync-blueprint.js",
+    "check-blueprint": "node scripts/sync-blueprint.js --check",
+    "playground": "npx @wp-playground/cli@latest server --blueprint=blueprints/blueprint-local.json",
+    "playground:web": "npx @wp-playground/cli@latest server --blueprint=blueprints/blueprint.json",
+    "format": "wp-scripts format 'wp-content/**/*.{js,json,css,html}'",
+    "lint:js": "wp-scripts lint-js wp-content",
+    "lint:css": "wp-scripts lint-style wp-content"
+  },
+  "prettier": "@wordpress/prettier-config",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^32.4.0"
+  }
+}

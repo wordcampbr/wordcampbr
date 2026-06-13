@@ -1,0 +1,71 @@
+name: Tests
+
+on:
+  push:
+    branches: ['**']
+    tags-ignore: ['**']
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  # ── Plugin and theme header validation ─────────────────────────────────────
+  headers:
+    name: Header consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check wordcamp-org headers
+        working-directory: wp-content/plugins/wordcamp-org
+        run: |
+          check() {
+            local label=$1 pattern=$2 file=$3
+            if ! grep -qE "$pattern" "$file"; then
+              echo "✗  '$label' missing in $file"
+              exit 1
+            fi
+            echo "✔  $label: $(grep -oE "$pattern" "$file" | head -1)"
+          }
+          check "Plugin Name"       "Plugin Name:"                        wordcamp-org.php
+          check "Version"           "Version:[[:space:]]+[0-9]+\.[0-9]"   wordcamp-org.php
+          check "Requires at least" "Requires at least:[[:space:]]+[0-9]" wordcamp-org.php
+          check "Requires PHP"      "Requires PHP:[[:space:]]+[0-9]"      wordcamp-org.php
+          check "Tested up to"      "Tested up to:[[:space:]]+[0-9]"      wordcamp-org.php
+          check "License"           "License:[[:space:]]+GPL"             wordcamp-org.php
+
+      - name: Check blank-theme headers
+        working-directory: wp-content/themes/blank-theme
+        run: |
+          check() {
+            local label=$1 pattern=$2 file=$3
+            if ! grep -qE "$pattern" "$file"; then
+              echo "✗  '$label' missing in $file"
+              exit 1
+            fi
+            echo "✔  $label: $(grep -oE "$pattern" "$file" | head -1)"
+          }
+          check "Theme Name"        "Theme Name:"                          style.css
+          check "Version"           "Version:[[:space:]]+[0-9]+\.[0-9]"   style.css
+          check "Requires at least" "Requires at least:[[:space:]]+[0-9]" style.css
+          check "Requires PHP"      "Requires PHP:[[:space:]]+[0-9]"      style.css
+
+  # ── Blueprint sync check ────────────────────────────────────────────────────
+  blueprint-sync:
+    name: Blueprint in sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch uploads branch (media assets read by sync-blueprint.js)
+        run: git fetch origin uploads:uploads
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Check blueprint.json is up to date
+        run: node scripts/sync-blueprint.js --check
+        # If this fails, run `npm run sync-blueprint` locally and commit the result.
