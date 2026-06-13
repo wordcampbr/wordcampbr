@@ -84,7 +84,7 @@
   <dc:creator/>
   <guid isPermaLink="false">http://localhost:8897/2026/06/13/header/</guid>
   <description/>
-  <content:encoded><![CDATA[<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} --><div class="wp-block-group"><!-- wp:site-logo {"shouldSyncIcon":true} /--><!-- wp:navigation {"ref":4} /--></div><!-- /wp:group --> --meta_input={"theme":"blank-theme","slug":"header","area":"header"} --porcelain]]></content:encoded>
+  <content:encoded><![CDATA[<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} --><div class="wp-block-group"><!-- wp:site-logo {"shouldSyncIcon":true} /--><!-- wp:navigation {"ref":4} /--></div><!-- /wp:group -->]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>20</wp:post_id>
   <wp:post_date>2026-06-13 09:14:59</wp:post_date>
@@ -100,6 +100,18 @@
   <wp:post_type>wp_template_part</wp:post_type>
   <wp:post_password/>
   <wp:is_sticky>0</wp:is_sticky>
+  <wp:postmeta>
+    <wp:meta_key>theme</wp:meta_key>
+    <wp:meta_value><![CDATA[blank-theme]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>slug</wp:meta_key>
+    <wp:meta_value><![CDATA[header]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>area</wp:meta_key>
+    <wp:meta_value><![CDATA[header]]></wp:meta_value>
+  </wp:postmeta>
 </item>
   </channel>
 </rss>
