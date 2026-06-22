@@ -1,0 +1,22 @@
+name: PR Preview - Build
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+jobs:
+  build:
+    uses: WordPress/action-wp-playground-pr-preview/.github/workflows/preview-build.yml@v3
+    with:
+      artifacts: |
+        blank-theme=build/blank-theme.zip
+        wordcamp-org=build/wordcamp-org.zip
+      blueprint-from-build: blueprints/blueprint.json
+      build-command: |
+        mkdir -p build
+
+        git archive HEAD --prefix=blank-theme/ -- wp-content/themes/blank-theme/ | \
+          tar xf - -C build/ --transform 's|wp-content/themes/||'
+
+        git archive HEAD --prefix=wordcamp-org/ -- wp-content/plugins/wordcamp-org/ | \
+          tar xf - -C build/ --transform 's|wp-content/plugins/||'
+
+        (cd build && zip -r blank-theme.zip blank-theme && zip -r wordcamp-org.zip wordcamp-org)
